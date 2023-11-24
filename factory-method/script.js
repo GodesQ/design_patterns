@@ -1,88 +1,103 @@
-class Mail {
+class SocialNetworkPoster {
 
-    constructor(transport_type) {
-        this.transport_type = transport_type;
+    getSocialNetwork() {
+        throw ('This method should be overriden');
     }
 
-    createMail() {
-        throw Error("This method should be override.");
-    }
+    post(content) {
+        let network = this.getSocialNetwork();
 
-    send() {
-        const mail = this.createMail();
-        console.log(mail.message());
-    }
-}
+        network.login();
+        network.createPost(content);
+        network.logout();
 
-class Transport {
-    message() {
-        throw Error("This method should be override.");
     }
 }
 
-class Plane extends Transport {
-    message() {
-        return 'Airplane is on the way! It is in air now!';
+class FacebookPoster extends SocialNetworkPoster {
+    constructor(email, password) {
+        super(email, password);
+        this.email = email;
+        this.password = password;
+    }
+
+    getSocialNetwork() {
+        return new FacebookConnector(this.email, this.password);
     }
 }
 
-class Truck extends Transport {
-    message() {
-        return 'Truck is on the way! There traffic in express way';
+class LinkedInPoster extends SocialNetworkPoster {
+    constructor(email, password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    getSocialNetwork() {
+        return new LinkedInConnector(this.email, this.password);
     }
 }
 
-class Train extends Transport {
-    message() {
-        return 'Train is on the way! Train is faster than truck';
+class SocialNetworkConnector {
+    login() {
+        throw Error('This method should be overriden');
+    }
+
+    logout() {
+        throw Error('This method should be overriden');
+    }
+
+    createPost(content) {
+        throw Error('This method should be overriden');
     }
 }
 
-class AirMail extends Mail {
-    createMail() {
-        return new Plane();
+class FacebookConnector extends SocialNetworkConnector {
+
+    constructor(email, password) {
+        super(email, password);
+
+        this.email = email;
+        this.password = password;
+    }
+
+    login() {
+        return console.log(`${this.email} Facebook successfully login`);
+    }
+
+    logout() {
+        return console.log(`${this.email} Facebook successfully logout`);
+    }
+
+    createPost(content) {
+        return console.log(`${this.email} Facebook created a post`);
     }
 }
 
-class GroundMail extends Mail {
-    constructor(transport_type) {
-        super(transport_type);
-        this.transport_type = transport_type;
+class LinkedInConnector extends SocialNetworkConnector {
+
+    constructor(email, password) {
+        super(email, password);
+
+        this.email = email;
+        this.password = password;
     }
 
-    createMail() {
-        return new this.transport_type();
-    }
-}
-
-class Application {
-
-    constructor() {
-        this.delivery_mail = null;        
-    }
-    
-    run() {
-        const mail_delivery_type = 'Ground';
-        const mail_transport_type = Truck;
-
-        switch (mail_delivery_type) {
-            case 'Air':
-                this.delivery_mail = new AirMail();
-                break;
-            
-            case 'Ground':
-                this.delivery_mail = new GroundMail(mail_transport_type);
-                break;
-            default:
-                break;
-        }
+    login() {
+        return console.log(`${this.email} LinkedIn successfully login.`);
     }
 
-    main() {
-        this.run();
-        this.delivery_mail.send();
+    logout() {
+        return console.log(`${this.email} LinkedIn successfully logout`);
+    }
+
+    createPost() {
+        return console.log(`${this.email} LinkedIn created a post`);
     }
 }
 
-const app = new Application();
-app.main();
+function clientCode(creator) {
+    creator.post('Hello! This is Content');
+}
+
+clientCode(new FacebookPoster('jamesgarnfil@gmail.com', 'Test123!'));
+

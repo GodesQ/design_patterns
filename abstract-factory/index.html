@@ -3,10 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test</title>
+    <title>Abstract Factory</title>
+    <style>
+        .light-theme-btn {
+            background-color: #f8f8f8;
+            color: #000;
+            border: 1px solid #fff;
+        }
+        .dark-theme-btn {
+            background-color: #1b1b1b;
+            color: #fff;
+            border: 1px solid #fff;
+        }
+        .btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
+        .light-theme-checkbox:checked {
+            accent-color: #f8f8f8;
+            border: 1px solid rgb(224, 224, 224);
+        }
+        .dark-theme-checkbox:checked {
+            accent-color: #1b1b1b;
+            border: 1px solid #ffffff;
+        }
+    </style>
 </head>
 <body>
-    <h2>Abstract Factory</h2>
-    <p>This is Abstract Factory</p>
+    <select name="" id="theme">
+        <option value="dark">-- SELECT THEME --</option>
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+    </select>
+    <!-- <input type="checkbox" name="" id=""> -->
+    <div class="ui-factory"></div>
+    <script src="script.js"></script>
 </body>
 </html>
